@@ -1,16 +1,3 @@
 # ad-pwd-report
-
-fjdsa;fjdsa;fj;lkdsaf
-
-d
-safdsa
-f
-dsa
-fas
-df
-sa
-f
-dsaf
-sa
-f
-saf
+Get-ADUser -identity robert.allen –Properties "DisplayName", "msDS-UserPasswordExpiryTimeComputed" |
+Select-Object -Property "Displayname",@{Name="ExpiryDate";Expression={[datetime]::FromFileTime($_."msDS-UserPasswordExpiryTimeComputed")}}
