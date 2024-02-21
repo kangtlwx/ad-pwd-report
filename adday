@@ -1,0 +1,8 @@
+$targetDays = 10
+$targetDate = (Get-Date).AddDays($targetDays)
+Write-Host “Password-Expiration Date before:” $targetDate
+
+# Shows Password expiration Date of Domain (“mydomain.com”) where expiry date is less then 10 days from today
+Get-ADUser -filter {Enabled -eq $True -and PasswordNeverExpires -eq $False} –Properties “DisplayName”, “msDS-UserPasswordExpiryTimeComputed” -Server “mydomain.com” |
+Select-Object -Property “Displayname”,@{Name=”ExpiryDate”;Expression={[datetime]::FromFileTime($_.”msDS-UserPasswordExpiryTimeComputed”)}} |
+Where-Object ExpiryDate -lt $targetDate | Sort DisplayName
